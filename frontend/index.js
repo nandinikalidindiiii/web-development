@@ -25,8 +25,28 @@ var user = [
     userImage.src = user[curId].image;
   }
 
-  function randomUser() {
-    fetch("https://randomuser.me/api")
+  function randomUser(){
+    var userImage = document.getElementById("user-image");
+    var userName = document.getElementById("user-name");
+    var userGender = document.getElementById("user-gender");
+
+    fetch("https://randomuser.me/api/")
+        .then(function(res){
+            return res.json();
+        })
+        .then(function(data){
+            userImage.src = data.results[0].picture.large;
+            userName.innerHTML = data.results[0].name.first + " " + data.results[0].name.last;
+            userGender.innerHTML = data.results[0].gender;
+        })
+        .catch(function(err){
+            console.log("Error occured : " + err);
+        })
+
+}
+
+  function myRandomUser() {
+    fetch("/api/random-user")
     .then(function(res) {
       return res.json();
     })
@@ -35,12 +55,10 @@ var user = [
       var userGender = document.getElementById("user-gender");
       var userImage = document.getElementById("user-image");
 
-      var newUserName = data.results[0].name.first + " " + data.results[0].name.last;
-      var newUserGender = data.results[0].gender;
-      var newUserImage = data.results[0].picture.large;
-      userName.innerHTML = newUserName;
-      userGender.innerHTML = newUserGender;
-      userImage.src = newUserImage;
+     
+      userName.innerHTML = data.name;
+      userGender.innerHTML = data.gender;
+      userImage.src = data.image;
 
     })
     .catch(function(err) {
@@ -49,3 +67,4 @@ var user = [
 
 
   }
+  
